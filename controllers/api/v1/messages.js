@@ -58,3 +58,4 @@ const update = async (req, res) => {
 
 module.exports.index = index;
 module.exports.create = create;
+module.exports.update = update;
