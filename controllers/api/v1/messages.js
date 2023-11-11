@@ -45,6 +45,24 @@ const create = async (req, res) => {
     });
 };
 
+// delete a message with :id
+const deleteMessage = async (req, res) => {
+    let message = await Message.findById(req.params.id);
+    await message.remove();
+    res.json({
+        status: "success",
+        message: "The massage was removed",
+        data: [
+            {
+                message: message,
+            },
+        ],
+    });
+};
+
+
+
 module.exports.index = index;
 module.exports.show = show;
 module.exports.create = create;
+module.exports.delete = deleteMessage;
