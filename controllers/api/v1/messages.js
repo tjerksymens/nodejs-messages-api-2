@@ -52,7 +52,7 @@ const update = async (req, res) => {
     await message.save();
     res.json({
         status: "success",
-        message: "The message was updated",
+        message: "The message with id " + req.params.id + " was updated",
         data: [
             {
                 message: message,
@@ -67,10 +67,24 @@ const deleteMessage = async (req, res) => {
     await message.remove();
     res.json({
         status: "success",
-        message: "The massage was removed",
+        message: "The massage with id " + req.params.id +  " was removed",
         data: [
             {
                 message: message,
+            },
+        ],
+    });
+};
+
+// get a message where user = username
+const getUserMessages = async (req, res) => {
+    let messages = await Message.find({ user: req.params.username });
+    res.json({
+        status: "success",
+        message: "GETTING message for username" + req.params.username,
+        data: [
+            {
+                messages: messages,
             },
         ],
     });
@@ -83,3 +97,4 @@ module.exports.show = show;
 module.exports.create = create;
 module.exports.update = update;
 module.exports.deleteMessage = deleteMessage;
+module.exports.getUserMessages = getUserMessages;

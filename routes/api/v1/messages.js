@@ -11,5 +11,6 @@ router.post("/", messagesController.create);
 router.get("/:id", messagesController.show);
 router.put("/:id", messagesController.update);
 router.delete("/:id", messagesController.deleteMessage);
+router.get("/:username", messagesController.getUserMessages);
 
 module.exports = router;
