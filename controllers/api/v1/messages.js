@@ -67,7 +67,7 @@ const createWithUsername = async (req, res) => {
 
     res.json({
         status: "success",
-        message: "POST a new message with username" + req.params.username,
+        message: "POST a new message with username " + req.params.username,
         data: [
             {
                 user: user,
@@ -125,7 +125,7 @@ const deleteMessage = async (req, res) => {
     }
 };
 
-// get a message where user = username
+// get all messages from username
 const getUserMessages = async (req, res) => {
     try{
         const username = req.params.username;
@@ -141,7 +141,7 @@ const getUserMessages = async (req, res) => {
             });
         }
 
-        const messages = await Message.find({ user: user._id });
+        const messages = await Message.find({ user: user._id }).populate("user");
 
         res.json({
             status: "success",
