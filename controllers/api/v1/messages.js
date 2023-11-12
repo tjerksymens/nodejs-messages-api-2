@@ -32,13 +32,13 @@ const show = async (req, res) => {
 const create = async (req, res) => {
     let messageText = req.body.message;
     let username = req.params.username;
-
-    let user = await User.findOne({ user: username });;
     
     let message = new Message();
     message.message = messageText;
+    let user = new User();
     message.user = username;
     await message.save();
+    await user.save();
 
     res.json({
         status: "success",
