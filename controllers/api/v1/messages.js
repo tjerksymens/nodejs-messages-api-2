@@ -29,7 +29,24 @@ const show = async (req, res) => {
     });
 };
 
+// post a message
 const create = async (req, res) => {
+    let messageText = req.body.message;
+    let message = new Message();
+    message.message = messageText;
+    await message.save();
+    res.json({
+        status: "success",
+        message: "POST a new message",
+        data: [
+            {
+                message: message,
+            },
+        ],
+    });
+};
+
+const createWithUsername = async (req, res) => {
     let messageText = req.body.message;
     let username = req.params.username;
     
@@ -110,6 +127,7 @@ const getUserMessages = async (req, res) => {
 module.exports.index = index;
 module.exports.show = show;
 module.exports.create = create;
+module.exports.createWithUsername = createWithUsername;
 module.exports.update = update;
 module.exports.deleteMessage = deleteMessage;
 module.exports.getUserMessages = getUserMessages;
