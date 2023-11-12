@@ -65,4 +65,4 @@ const deleteMessage = async (req, res) => {
 module.exports.index = index;
 module.exports.show = show;
 module.exports.create = create;
-module.exports.delete = deleteMessage;
+module.exports.deleteMessage = deleteMessage;
