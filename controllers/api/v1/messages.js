@@ -87,25 +87,34 @@ const update = async (req, res) => {
 
 // delete a message with :id
 const deleteMessage = async (req, res) => {
-    let message = await Message.findById(req.params.id);
+    try {
+        let message = await Message.findById(req.params.id);
 
-    if (!message) {
-        return res.status(404).json({
+        if (!message) {
+            return res.status(404).json({
+                status: "error",
+                message: "Message not found",
+            });
+        }
+
+        await message.deleteOne();
+
+
+        res.json({
+            status: "success",
+            message: "The massage with id " + req.params.id +  " was removed",
+            data: [
+                {
+                    message: message,
+                },
+            ],
+        });
+    } catch (error) {
+        res.status(500).json({
             status: "error",
-            message: "Message not found",
+            message: "Internal Sever Error",
         });
     }
-
-    await message.remove();
-    res.json({
-        status: "success",
-        message: "The massage with id " + req.params.id +  " was removed",
-        data: [
-            {
-                message: message,
-            },
-        ],
-    });
 };
 
 // get a message where user = username
