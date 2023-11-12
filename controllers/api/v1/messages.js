@@ -131,7 +131,7 @@ const getUserMessages = async (req, res) => {
         const username = req.params.username;
 
         //Find user
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ user: username });
 
         //If user does not exist, return error
         if(!user){
