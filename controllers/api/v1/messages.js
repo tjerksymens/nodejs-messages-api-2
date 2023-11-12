@@ -30,15 +30,17 @@ const show = async (req, res) => {
 
 const create = async (req, res) => {
     let message = req.body.message;
+    let user = req.params.username;
     let m = new Message();
     m.message = message;
+    m.user = user;
     await m.save();
-
     res.json({
         status: "success",
         message: "POST a new message",
         data: [
             {
+                user: m.user,
                 message: m,
             },
         ],
