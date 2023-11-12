@@ -34,17 +34,10 @@ const create = async (req, res) => {
     let username = req.params.username;
 
     let user = await User.findOne({ user: username });;
-
-    if (!user) {
-        return res.status(404).json({
-            status: "error",
-            message: "User not found",
-        });
-    }
     
     let message = new Message();
     message.message = messageText;
-    message.user = user._id;
+    message.user = username;
     await message.save();
 
     res.json({
