@@ -68,6 +68,7 @@ const update = async (req, res) => {
 // delete a message with :id
 const deleteMessage = async (req, res) => {
     let message = await Message.findById(req.params.id);
+    message.message = req.body.message;
     await message.remove();
     res.json({
         status: "success",
