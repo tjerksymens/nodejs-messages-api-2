@@ -30,20 +30,30 @@ const show = async (req, res) => {
 };
 
 const create = async (req, res) => {
-    let message = req.body.message;
-    let user = req.params.username;
-    let m = new Message();
-    let u = new User();
-    m.message = message;
-    u.user = user;
-    await m.save();
+    let messageText = req.body.message;
+    let username = req.params.username;
+
+    let user = await User.findOne({ user: username });;
+
+    if (!user) {
+        return res.status(404).json({
+            status: "error",
+            message: "User not found",
+        });
+    }
+    
+    let message = new Message();
+    message.message = messageText;
+    message.user = user._id;
+    await message.save();
+
     res.json({
         status: "success",
         message: "POST a new message",
         data: [
             {
-                user: u,
-                message: m,
+                user: user,
+                message: message,
             },
         ],
     });
