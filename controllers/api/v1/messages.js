@@ -45,6 +45,22 @@ const create = async (req, res) => {
     });
 };
 
+// put a message with :id
+const update = async (req, res) => {
+    let message = await Message.findById(req.params.id);
+    message.message = req.body.message;
+    await message.save();
+    res.json({
+        status: "success",
+        message: "The message was updated",
+        data: [
+            {
+                message: message,
+            },
+        ],
+    });
+};
+
 // delete a message with :id
 const deleteMessage = async (req, res) => {
     let message = await Message.findById(req.params.id);
@@ -65,4 +81,5 @@ const deleteMessage = async (req, res) => {
 module.exports.index = index;
 module.exports.show = show;
 module.exports.create = create;
+module.exports.update = update;
 module.exports.deleteMessage = deleteMessage;
