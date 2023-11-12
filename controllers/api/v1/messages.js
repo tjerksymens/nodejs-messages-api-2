@@ -127,16 +127,38 @@ const deleteMessage = async (req, res) => {
 
 // get a message where user = username
 const getUserMessages = async (req, res) => {
-    let messages = await Message.find({ user: req.params.username });
-    res.json({
-        status: "success",
-        message: "GETTING message for username" + req.params.username,
-        data: [
-            {
-                messages: messages,
-            },
-        ],
-    });
+    try{
+        const username = req.params.username;
+
+        //Find user
+        const user = await User.findOne({ username });
+
+        //If user does not exist, return error
+        if(!user){
+            return res.status(404).json({
+                status: "error",
+                message: "User not found",
+            });
+        }
+
+        const messages = await Message.find({ user: user._id });
+
+        res.json({
+            status: "success",
+            message: "GET all messages from user " + username,
+            data: [
+                {
+                    user: user,
+                    messages: messages,
+                },
+            ],
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: "error",
+            message: "Internal Sever Error",
+        });
+    }
 };
 
 
