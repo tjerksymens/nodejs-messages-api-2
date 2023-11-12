@@ -142,6 +142,7 @@ const getUserMessages = async (req, res) => {
         }
 
         const messages = await Message.find({ user: user._id }).populate("user");
+        console.log(user._id);
 
         res.json({
             status: "success",
