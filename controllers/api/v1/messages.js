@@ -1,5 +1,6 @@
 // require the Message model
 const Message = require("../../../models/Message");
+const User = require("../../../models/User");
 
 const index = async (req, res) => {
     let messages = await Message.find({});
@@ -32,15 +33,16 @@ const create = async (req, res) => {
     let message = req.body.message;
     let user = req.params.username;
     let m = new Message();
+    let u = new User();
     m.message = message;
-    m.user = user;
+    u.user = user;
     await m.save();
     res.json({
         status: "success",
         message: "POST a new message",
         data: [
             {
-                user: m.user,
+                user: u,
                 message: m,
             },
         ],

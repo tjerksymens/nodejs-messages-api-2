@@ -8,6 +8,15 @@ const MessageSchema = new Schema({
         required: true,
     },
 });
+const UserSchema = new Schema({
+    // user is a required string
+    user: {
+        type: String,
+        required: true,
+    },
+});
 // export the model to use it in index.js
 const Message = mongoose.model("Message", MessageSchema);
+const User = mongoose.model("User", UserSchema);
 module.exports = Message;
+module.exports = User;
