@@ -50,16 +50,24 @@ const createWithUsername = async (req, res) => {
     let messageText = req.body.message;
     let username = req.params.username;
     
+    // Check if user exists
+    let user = await User.findOne({ user: username });
+
+    // If user does not exist, create a new user
+    if (!user) {
+        user = new User();
+        user.user = username;
+        await user.save();
+    }
+
     let message = new Message();
     message.message = messageText;
-    let user = new User();
-    message.user = username;
+    message.user = user._id;
     await message.save();
-    await user.save();
 
     res.json({
         status: "success",
-        message: "POST a new message",
+        message: "POST a new message with username" + req.params.username,
         data: [
             {
                 user: user,
