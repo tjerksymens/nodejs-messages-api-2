@@ -125,38 +125,6 @@ const deleteMessage = async (req, res) => {
     }
 };
 
-// get messages showByUsername if user exists
-const showByUsername = async (req, res) => {
-    try{
-        let username = req.query.user;
-        let user = await User.findOne({ user: username });
-        if (!user) {
-            return res.status(404).json({
-                status: "error",
-                message: "User not found",
-            });
-        }
-        let messages = await Message.find({ user: user._id });
-        res.json({
-            status: "success",
-            message: "GET all messages with username " + username,
-            data: [
-                {
-                    user: user,
-                    messages: messages,
-                },
-            ],
-        });
-    }
-    catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            status: "error",
-            message: "Internal server error",
-        });
-    }
-};
-
 
 module.exports.index = index;
 module.exports.show = show;
@@ -164,4 +132,3 @@ module.exports.create = create;
 module.exports.createWithUsername = createWithUsername;
 module.exports.update = update;
 module.exports.deleteMessage = deleteMessage;
-module.exports.showByUsername = showByUsername;
