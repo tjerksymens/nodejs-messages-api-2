@@ -95,73 +95,35 @@ const update = async (req, res) => {
 
 // delete a message with :id
 const deleteMessage = async (req, res) => {
-    try {
-        let message = await Message.findById(req.params.id);
+    const id = req.params.id;
 
-        if (!message) {
+    try {
+        const deletedMessage = await Message.findByIdAndRemove(id);
+
+        if (!deletedMessage) {
             return res.status(404).json({
                 status: "error",
                 message: "Message not found",
             });
-        }
-
-        await message.deleteOne();
-
+        };
 
         res.json({
             status: "success",
-            message: "The massage with id " + req.params.id +  " was removed",
-            data: [
-                {
-                    message: message,
-                },
-            ],
+            message: "The message with id " + id + " was deleted",
+            data: {
+                message: deletedMessage,
+            },
         });
+
+
     } catch (error) {
-        res.status(500).json({
+        console.log(error);
+        return res.status(500).json({
             status: "error",
-            message: "Internal Sever Error",
+            message: "Internal server error",
         });
     }
 };
-
-// get all messages from username
-const getUserMessages = async (req, res) => {
-    try{
-        const username = req.params.username;
-
-        //Find user
-        const user = await User.findOne({ user: username });
-
-        //If user does not exist, return error
-        if(!user){
-            return res.status(404).json({
-                status: "error",
-                message: "User not found",
-            });
-        }
-
-        const messages = await Message.find({ user: user._id }).populate("user");
-        console.log(user._id);
-
-        res.json({
-            status: "success",
-            message: "GET all messages from user " + username,
-            data: [
-                {
-                    user: user,
-                    messages: messages,
-                },
-            ],
-        });
-    } catch (error) {
-        res.status(500).json({
-            status: "error",
-            message: "Internal Sever Error",
-        });
-    }
-};
-
 
 
 module.exports.index = index;
@@ -170,4 +132,3 @@ module.exports.create = create;
 module.exports.createWithUsername = createWithUsername;
 module.exports.update = update;
 module.exports.deleteMessage = deleteMessage;
-module.exports.getUserMessages = getUserMessages;
